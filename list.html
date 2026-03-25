@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Máquinas - GMD Machine Passport</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
+    th { background: #1E1E1E; color: var(--primary); }
+    tr:hover { background: #2A2A2A; }
+    .status { padding: 4px 10px; border-radius: 20px; font-size: 0.9rem; }
+    .status.operativo { background: #004d00; color: #00ff88; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><span style="color:var(--primary)">GMD</span> Machine Passport</h1>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="list.html" class="active">Máquinas</a>
+      <a href="#" onclick="logout()">Cerrar Sesión</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Lista de Máquinas</h2>
+      <input type="text" id="search" placeholder="Buscar por ID o nombre..." 
+             style="width:100%; padding:12px; margin-bottom:1rem; border-radius:8px; border:none; background:#2A2A2A; color:white;">
+      
+      <table id="machinesTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Modelo</th>
+            <th>Ubicación</th>
+            <th>Estado</th>
+            <th>Responsable</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script>
+    let allMachines = [];
+
+    async function loadMachines() {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Cargando máquinas...</td></tr>';
+
+      allMachines = await getAllMachines();
+
+      renderTable(allMachines);
+    }
+
+    function renderTable(machines) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      machines.forEach(machine => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>${machine.id}</strong></td>
+          <td>${machine.modelo || 'Atomstack S20 Pro'}</td>
+          <td>${machine.ubicacion || 'Taller GMD'}</td>
+          <td><span class="status operativo">${machine.estado || 'OPERATIVO'}</span></td>
+          <td>${machine.responsable || 'Jorge'}</td>
+          <td>
+            <a href="passport.html?id=${machine.id}" class="btn" style="padding:8px 16px; font-size:0.9rem;">Ver Passport</a>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Búsqueda en tiempo real
+    document.getElementById('search').addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = allMachines.filter(m => 
+        m.id.toLowerCase().includes(term) || 
+        (m.modelo && m.modelo.toLowerCase().includes(term))
+      );
+      renderTable(filtered);
+    });
+
+    function logout() {
+      localStorage.removeItem('currentUser');
+      window.location.href = 'login.html';
+    }
+
+    // Cargar al iniciar
+    window.onload = loadMachines;
+  </script>
+</body>
+</html>

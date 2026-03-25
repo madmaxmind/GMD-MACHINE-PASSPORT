@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passport - GMD-LZR-001</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1>ATOMSTACK S20 PRO</h1>
+    <nav>
+      <a href="list.html">← Volver</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <img id="machine-image" src="https://via.placeholder.com/800x300/1a1a1a/FF6600?text=ATOMSTACK+S20+PRO" alt="Atomstack S20 Pro" style="width:100%; border-radius:12px; margin-bottom:1rem;">
+
+    <h2 id="title">GMD-LZR-001 • TALLER GMD</h2>
+
+    <div class="action-buttons">
+      <div class="action-btn"><i class="fas fa-cube"></i><div>3D</div></div>
+      <div class="action-btn"><i class="fas fa-book"></i><div>Manual</div></div>
+      <div class="action-btn"><i class="fas fa-history"></i><div>Historial</div></div>
+      <div class="action-btn"><i class="fas fa-sliders-h"></i><div>Params</div></div>
+    </div>
+
+    <div class="spec-grid">
+      <div class="spec-item"><div class="spec-value" id="power">20W</div><div>POTENCIA</div></div>
+      <div class="spec-item"><div class="spec-value" id="area">400x400 mm</div><div>ÁREA</div></div>
+      <div class="spec-item"><div class="spec-value" id="speed">12,000 mm/min</div><div>VELOCIDAD</div></div>
+      <div class="spec-item"><div class="spec-value" id="precision">0.08 mm</div><div>PRECISIÓN</div></div>
+    </div>
+
+    <div class="card">
+      <h3>ESTADO: <span id="status" style="color:#00ff88;">OPERATIVO</span></h3>
+      <p><strong>Responsable:</strong> <span id="responsible">Jorge</span></p>
+    </div>
+
+    <!-- Sección Parámetros e Historial (puedes expandir) -->
+
+    <button onclick="reportFailure()" class="btn" style="width:100%; margin-top:2rem; background:#cc0000;">
+      <i class="fas fa-exclamation-triangle"></i> REPORTAR FALLA
+    </button>
+  </div>
+
+  <script src="assets/js/api.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const machineId = urlParams.get('id') || 'GMD-LZR-001';
+
+    async function loadPassport() {
+      const data = await getMachineData(machineId);
+      if (!data) return alert('No se pudo cargar la máquina');
+
+      document.getElementById('title').textContent = `${data.id} • ${data.location}`;
+      document.getElementById('power').textContent = data.power;
+      // ... completa los demás campos con data.xxx
+      document.getElementById('responsible').textContent = data.responsible || 'Jorge';
+    }
+
+    function reportFailure() {
+      const desc = prompt('Describe la falla:');
+      if (desc) {
+        reportFailure(machineId, desc).then(() => alert('Falla reportada correctamente'));
+      }
+    }
+
+    loadPassport();
+  </script>
+</body>
+</html>

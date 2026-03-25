@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Machine Passport</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="container" style="max-width:400px; margin-top:100px;">
+    <div class="card">
+      <h2 style="text-align:center; margin-bottom:1.5rem;">Iniciar Sesión</h2>
+      
+      <input type="text" id="username" placeholder="Usuario (ej: Jorge)" style="width:100%; padding:12px; margin-bottom:1rem; border-radius:8px; border:none;">
+      <input type="password" id="password" placeholder="Contraseña" style="width:100%; padding:12px; margin-bottom:1.5rem; border-radius:8px; border:none;">
+      
+      <button onclick="login()" class="btn" style="width:100%;">Entrar</button>
+      
+      <p style="text-align:center; margin-top:1rem; color:var(--text-light);">
+        Demo: Usuario <strong>Jorge</strong> / Cualquier contraseña
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const user = document.getElementById('username').value.trim();
+      if (user) {
+        localStorage.setItem('currentUser', user);
+        window.location.href = 'list.html';
+      } else {
+        alert('Ingresa un usuario');
+      }
+    }
+  </script>
+</body>
+</html>

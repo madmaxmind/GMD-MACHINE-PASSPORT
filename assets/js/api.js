@@ -1,6 +1,5 @@
 // ==================== CONFIGURACIÓN ====================
 https://script.google.com/macros/s/AKfycbwQ52s-4fXs3-olbE1AT9HLDEugFKDDt9UriIJhmPp0NdwxUUhy9M6V4cOP_REvHorp/exec
-// Obtén esta URL desplegando tu Apps Script como Web App (Execute as: Me, Who has access: Anyone)
 
 // Función genérica para leer datos
 async function getMachineData(machineId) {
